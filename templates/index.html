@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cambria Wallet Tracker</title>
+    <title>Cambria Orb Checker</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
     <style>
         html, body {
             margin: 0;
@@ -148,7 +149,7 @@
 </head>
 <body>
     <header>
-        Cambria Energy Orb Tracker
+        Cambria Energy Orb Сhecker
     </header>
 
     <div class="page">
@@ -190,7 +191,7 @@
                         <tr>
                             <td class="tx-hash">{{ tx[0] }}</td>
                             <td>{{ tx[1] }}</td>
-                            <td class="timestamp">{{ tx[2] }}</td>
+                            <td class="timestamp">{{ tx[2] | int | datetimeformat }}</td>
                             <td class="eth">{{ tx[3] }}</td>
                         </tr>
                         {% endfor %}
