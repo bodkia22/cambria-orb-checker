@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cambria Wallet Tracker</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #0f0f0f;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2em;
+            border-bottom: 1px solid #333;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9em;
+            border-top: 1px solid #333;
+            margin-top: auto;
+        }
+
+        .page {
+            display: flex;
+            flex: 1;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-right: 1px solid #333;
+            color: #ccc;
+            font-size: 0.95em;
+            flex-shrink: 0;
+        }
+
+        .sidebar h2 {
+            color: #ffcc00;
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+
+        .sidebar p {
+            margin-bottom: 12px;
+            line-height: 1.4em;
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .top-form {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .top-form h1 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            color: #f5f5f5;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 380px;
+            font-size: 0.94em;
+            border: none;
+            border-radius: 5px;
+            background-color: #222;
+            color: #fff;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin-left: 10px;
+            background-color: #3a3aff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5a5aff;
+        }
+
+        .summary {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #1c1c1c;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2a2a2a;
+            color: #ffcc00;
+        }
+
+        tr:hover {
+            background-color: #2f2f2f;
+        }
+
+        .tx-hash {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .eth {
+            color: #00ffcc;
+            font-weight: bold;
+        }
+
+        .timestamp {
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Cambria Energy Orb Tracker
+    </header>
+
+    <div class="page">
+        <div class="sidebar">
+        <h2>📘 About This Checker</h2>
+        <p>This tool calculates how many Energy Orbs you've bought and how much ETH you've spent.</p>
+        <p><strong>Note:</strong> It does <u>not</u> include the cost of purchasing a Charter.</p>
+        <p><strong>Price Basis:</strong> Dollar value is calculated using a fixed ETH rate of $3000.</p>
+    </div>
+
+
+        <div class="content">
+            <div class="top-form">
+                <h1>Check Your Energy Orb Spending</h1>
+                <form method="post">
+                    <input type="text" name="address" placeholder="Enter your wallet address" required>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
+            {% if results %}
+                <div class="summary">
+                    <p><strong>Wallet Address:</strong> {{ address }}</p>
+                    <p><strong>Total Spent:</strong> <span class="eth">{{ total_eth }} ETH ~ {{ total_eth*3000 }}$</span></p>
+                    <p><strong>Total Orbs Bought:</strong> <span class="eth">{{ (total_eth / 0.0012) | int }}</span></p>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transaction Hash</th>
+                            <th>Block</th>
+                            <th>Timestamp</th>
+                            <th>ETH</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tx in transactions %}
+                        <tr>
+                            <td class="tx-hash">{{ tx[0] }}</td>
+                            <td>{{ tx[1] }}</td>
+                            <td class="timestamp">{{ tx[2] }}</td>
+                            <td class="eth">{{ tx[3] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        Cambria Tools © 2025 | Powered by SQLite + FastAPI
+    </footer>
+</body>
+</html>
